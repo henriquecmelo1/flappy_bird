@@ -80,7 +80,7 @@ class Bird(pygame.sprite.Sprite):
 		if game_over == False:
 			#jump
 			var = get_microphone_frequency() * 100
-			lmt  = 1
+			lmt  = 3
 			print(var)
 			if var < lmt:
 				self.clicked = False
@@ -184,6 +184,9 @@ while run:
 	bird_group.draw(screen)
 	bird_group.update()
 
+	pipe_group.draw(screen)
+	pipe_group.update()
+
 	#draw and scroll the ground
 	screen.blit(ground_img, (ground_scroll, 768))
 
@@ -211,16 +214,16 @@ while run:
 
 	if flying == True and game_over == False:
 		#generate new pipes
-		# time_now = pygame.time.get_ticks()
-		# if time_now - last_pipe > pipe_frequency:
-		# 	pipe_height = random.randint(-100, 100)
-		# 	btm_pipe = Pipe(screen_width, int(screen_height / 2) + pipe_height, -1)
-		# 	top_pipe = Pipe(screen_width, int(screen_height / 2) + pipe_height, 1)
-		# 	pipe_group.add(btm_pipe)
-		# 	pipe_group.add(top_pipe)
-		# 	last_pipe = time_now
+		time_now = pygame.time.get_ticks()
+		if time_now - last_pipe > pipe_frequency*5:
+			pipe_height = random.randint(-100, 100)
+			btm_pipe = Pipe(screen_width, int(screen_height / 2) + int(pipe_height+30), -1)
+			top_pipe = Pipe(screen_width, int(screen_height / 2) + int(pipe_height+30), 1)
+			pipe_group.add(btm_pipe)
+			pipe_group.add(top_pipe)
+			last_pipe = time_now
 
-		# pipe_group.update()
+		pipe_group.update()
 
 		ground_scroll -= scroll_speed
 		if abs(ground_scroll) > 35:
