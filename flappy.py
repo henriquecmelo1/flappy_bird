@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import random
+from audio import get_microphone_frequency
 
 pygame.init()
 
@@ -78,11 +79,21 @@ class Bird(pygame.sprite.Sprite):
 
 		if game_over == False:
 			#jump
-			if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
-				self.clicked = True
-				self.vel = -10
-			if pygame.mouse.get_pressed()[0] == 0:
+			var = get_microphone_frequency() * 100
+			lmt  = 1
+			print(var)
+			if var < lmt:
 				self.clicked = False
+			if var > lmt and self.clicked == False:
+				self.clicked = True
+				self.vel = -var
+            
+
+			# if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+			# 	self.clicked = True
+			# 	self.vel = -10
+			# if pygame.mouse.get_pressed()[0] == 0:
+			# 	self.clicked = False
 
 			#handle the animation
 			flap_cooldown = 5
@@ -169,7 +180,7 @@ while run:
 	#draw background
 	screen.blit(bg, (0,0))
 
-	pipe_group.draw(screen)
+	# pipe_group.draw(screen)
 	bird_group.draw(screen)
 	bird_group.update()
 
@@ -200,16 +211,16 @@ while run:
 
 	if flying == True and game_over == False:
 		#generate new pipes
-		time_now = pygame.time.get_ticks()
-		if time_now - last_pipe > pipe_frequency:
-			pipe_height = random.randint(-100, 100)
-			btm_pipe = Pipe(screen_width, int(screen_height / 2) + pipe_height, -1)
-			top_pipe = Pipe(screen_width, int(screen_height / 2) + pipe_height, 1)
-			pipe_group.add(btm_pipe)
-			pipe_group.add(top_pipe)
-			last_pipe = time_now
+		# time_now = pygame.time.get_ticks()
+		# if time_now - last_pipe > pipe_frequency:
+		# 	pipe_height = random.randint(-100, 100)
+		# 	btm_pipe = Pipe(screen_width, int(screen_height / 2) + pipe_height, -1)
+		# 	top_pipe = Pipe(screen_width, int(screen_height / 2) + pipe_height, 1)
+		# 	pipe_group.add(btm_pipe)
+		# 	pipe_group.add(top_pipe)
+		# 	last_pipe = time_now
 
-		pipe_group.update()
+		# pipe_group.update()
 
 		ground_scroll -= scroll_speed
 		if abs(ground_scroll) > 35:
