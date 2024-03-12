@@ -29,9 +29,9 @@ score = 0
 pass_pipe = False
 
 
-bg = pygame.image.load('img/bg.png')
-ground_img = pygame.image.load('img/ground.png')
-button_img = pygame.image.load('img/restart.png')
+bg = pygame.image.load('src/bg.png')
+ground_img = pygame.image.load('src/ground.png')
+button_img = pygame.image.load('src/restart.png')
 
 
 def draw_text(text, font, text_col, x, y):
@@ -56,7 +56,7 @@ class Bird(pygame.sprite.Sprite):
 		self.index = 0
 		self.counter = 0
 		for num in range (1, 4):
-			img = pygame.image.load(f"img/gota.{num}.png")
+			img = pygame.image.load(f"src/gota.{num}.png")
 			self.images.append(img)
 		self.image = self.images[self.index]
 		self.rect = self.image.get_rect()
@@ -100,7 +100,7 @@ class Pipe(pygame.sprite.Sprite):
 
 	def __init__(self, x, y, position):
 		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load("img/pipe.png")
+		self.image = pygame.image.load("src/pipe.png")
 		self.rect = self.image.get_rect()
 		if position == 1:
 			self.image = pygame.transform.flip(self.image, False, True)
@@ -146,23 +146,23 @@ bird_group.add(flappy)
 
 button = Button((screen_width // 2) -65, screen_height // 2, button_img)
 
-logo_menu = pygame.image.load('img/logo.png')
+logo_menu = pygame.image.load('src/logo.png')
 logo_menu = pygame.transform.scale(logo_menu, (400, 200))
-menu_bg = pygame.image.load('img/menu.png')
+menu_bg = pygame.image.load('src/menu.png')
 menu_bg = pygame.transform.scale(menu_bg, (screen_width, screen_height))
-play_button = pygame.image.load('img/start.png')
+play_button = pygame.image.load('src/start.png')
 play_button = pygame.transform.scale(play_button, (200, 100))
-quit_button = pygame.image.load('img/quit.png')
+quit_button = pygame.image.load('src/quit.png')
 quit_button = pygame.transform.scale(quit_button, (200, 100))
-mute_button = pygame.image.load('img/mute_button.png')
+mute_button = pygame.image.load('src/mute_button.png')
 mute_button = pygame.transform.scale(mute_button, (50, 50))
-unmute_button = pygame.image.load('img/unmute_button.png')
+unmute_button = pygame.image.load('src/unmute_button.png')
 unmute_button = pygame.transform.scale(unmute_button, (50, 50))
 
 def main_menu():
 	global music_playing
 	pygame.mixer.init()
-	pygame.mixer.music.load('img/musica.mp3')
+	pygame.mixer.music.load('src/musica.mp3')
 	pygame.mixer.music.set_volume(0.3)
 	pygame.mixer.music.play(-1)
 	music_playing = True
@@ -284,6 +284,15 @@ while run:
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			run = False
+		
+		if event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_ESCAPE:
+				main_menu_active = True
+				main_menu()
+				game_over = False
+				score = reset_game()
+				if music_playing:
+					pygame.mixer.music.unpause()
 
 	pygame.display.update()
 
